@@ -4,8 +4,11 @@
 namespace simver{
 
     class Channel{
+    public:
+        virtual int getEvents() = 0;
+        virtual int getFd() = 0;
 
-    }
+    };
 
 }
 

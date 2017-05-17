@@ -9,8 +9,8 @@ namespace simver{
     public:
         Socket(uint16_t port);
         ~Socket();
-        void bind();
-        void listen();
+        void init();
+        void onConnection();
 
     private:
         uint16_t port_;
