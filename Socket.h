@@ -2,14 +2,22 @@
 #define SIMVER_SOCKET_H
 
 #include "Channel.h"
+#include <netinet/in.h>
 
 namespace simver{
     class Socket : public Channel{
     public:
-        Socket(int port);
+        Socket(uint16_t port);
         ~Socket();
+        void bind();
+        void listen();
 
-    }
+    private:
+        uint16_t port_;
+        int family_;
+        int sockfd_;
+        struct sockaddr_in addr_;
+    };
 }
 
 #endif
