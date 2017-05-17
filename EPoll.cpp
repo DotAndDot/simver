@@ -27,9 +27,23 @@ void EPoll::updateCtl(int op, Channel *channel) {
     event.events = channel->getEvents();
     event.data.ptr = channel;
     event.data.fd = fd;
-
+    int res = epoll_ctl(epollfd_, op, fd, event);
 }
 
 void EPoll::addChannel(Channel *channel) {
 
+}
+
+const char* operationToString(int op){
+    switch(op){
+        case EPOLL_CTL_ADD:
+            return "ADD";
+        case EPOLL_CTL_DEL:
+            return "DEL";
+        case EPOLL_CTL_MOD:
+            return "MOD";
+        default:
+            assert(false && "ERROR op");
+            return "Unknown Operation";
+    }
 }

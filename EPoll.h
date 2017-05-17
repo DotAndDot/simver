@@ -21,6 +21,7 @@ namespace simver{
         ~EPoll();
         void updateCtl(int op, Channel* channel);
         void addChannel(Channel* channel);
+        const char* operationToString(int op);
 
     private:
         int epollfd_;
