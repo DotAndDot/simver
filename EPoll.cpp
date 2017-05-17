@@ -28,6 +28,7 @@ void EPoll::updateCtl(int op, Channel *channel) {
     event.data.ptr = channel;
     event.data.fd = fd;
     int res = epoll_ctl(epollfd_, op, fd, event);
+
 }
 
 void EPoll::addChannel(Channel *channel) {

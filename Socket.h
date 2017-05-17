@@ -15,7 +15,6 @@ namespace simver{
     private:
         uint16_t port_;
         int family_;
-        int sockfd_;
         struct sockaddr_in addr_;
     };
 }
