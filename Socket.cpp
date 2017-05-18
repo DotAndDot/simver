@@ -33,4 +33,8 @@ void Socket::init(){
     }
 }
 
+void Socket::readCallback() {
+
+}
+
 

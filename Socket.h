@@ -10,7 +10,7 @@ namespace simver{
         Socket(uint16_t port);
         ~Socket();
         void init();
-        void onConnection();
+        virtual void readCallback();
 
     private:
         uint16_t port_;

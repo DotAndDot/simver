@@ -6,21 +6,24 @@
 #define SIMVER_EPOLL_H
 
 #include<vector>
-#include<sys/epoll.h>
-#include <bits/unordered_map.h>
-#include "Channel.h"
+#include<unordered_map.h>
+#include"EventLoop.h"
+
 
 const int initEventSize = 20;
 
 struct epoll_event;
 
 namespace simver{
+    class Channel;
     class EPoll{
     public:
         EPoll();
         ~EPoll();
         void updateCtl(int op, Channel* channel);
         void addChannel(Channel* channel);
+        void delChannel(Channel* channel);
+        void pollWait(int timeout, ChannelList channels);
         const char* operationToString(int op);
 
     private:
