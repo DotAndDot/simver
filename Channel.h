@@ -1,6 +1,8 @@
 #ifndef SIMVER_CHANNEL_H
 #define SIMVER_CHANNEL_H
 
+#include <string>
+
 namespace simver{
 
     class Channel{
@@ -14,12 +16,12 @@ namespace simver{
         void setWriteEvents() { events_ = WriteEvent;}
         void setNoneEvents() {events_ = NoneEvent;}
         void handleEvent();
-        virtual closeCallback();
-        virtual errorCallback();
-        virtual readCallback();
-        virtual writeCallback();
+        virtual void handleClose();
+        virtual void handleError();
+        virtual void handleRead();
+        virtual void handleWrite();
 
-        string eventsToString();
+        std::string eventsToString();
 
     protected:
         int events_;

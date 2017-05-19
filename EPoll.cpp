@@ -2,9 +2,10 @@
 // Created by gxh on 17-5-17.
 //
 #include <unistd.h>
-#include <string.h>
+#include <strings.h>
 #include<sys/epoll.h>
 #include<error.h>
+#include <assert.h>
 #include "EPoll.h"
 #include "log/log.h"
 #include "Channel.h"

@@ -13,7 +13,7 @@ const int Channel::NoneEvent = 0;
 const int Channel::ReadEvent = POLLIN | POLLPRI;
 const int Channel::WriteEvent = POLLOUT;
 
-string Channel::eventsToString()
+std::string Channel::eventsToString()
 {
     std::ostringstream oss;
     oss << channelfd_ << ": ";
@@ -36,26 +36,26 @@ string Channel::eventsToString()
 }
 
 void Channel::handleEvent(){
-    if ((revents_ & POLLHUP) && !(revents_ & POLLIN))
+    if ((curevent_ & POLLHUP) && !(curevent_ & POLLIN))
     {
-        closeCallback();
+        handleClose();
     }
 
-    if (revents_ & POLLNVAL)
+    if (curevent_ & POLLNVAL)
     {
          LOG_WARN("fd = %d Channel::handle_event() POLLNVAL\n", channelfd_);
     }
 
-    if (revents_ & (POLLERR | POLLNVAL))
+    if (curevent_ & (POLLERR | POLLNVAL))
     {
-        errorCallback();
+        handleError();
     }
-    if (revents_ & (POLLIN | POLLPRI | POLLRDHUP))
+    if (curevent_ & (POLLIN | POLLPRI | POLLRDHUP))
     {
-        readCallback();
+        handleRead();
     }
-    if (revents_ & POLLOUT)
+    if (curevent_ & POLLOUT)
     {
-        writeCallback();
+        handleWrite();
     }
 }

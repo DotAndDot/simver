@@ -11,6 +11,6 @@ set(SOURCE_FILES
         EPoll.cpp
         EPoll.h
         Socket.cpp
-        Socket.h Channel.cpp EventLoop.h EventLoop.cpp)
+        Socket.h Channel.cpp EventLoop.h EventLoop.cpp Connection.h Connection.cpp)
 
 add_executable(sim ${SOURCE_FILES})

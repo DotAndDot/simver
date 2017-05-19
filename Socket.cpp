@@ -2,6 +2,7 @@
 #include "log/log.h"
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <strings.h>
 
 using namespace simver;
 
@@ -33,8 +34,11 @@ void Socket::init(){
     }
 }
 
-void Socket::readCallback() {
-
+void Socket::handleRead() {
+    struct sockaddr add;
+    bzero(&add, sizeof(add));
+    int con = accept(channelfd_, &add, sizeof(add));
+    readCallback_(con);
 }
 
 
