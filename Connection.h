@@ -20,12 +20,18 @@ namespace simver{
         virtual void handleWrite();
         virtual void handleClose();
 
-        typedef std::function<void (const Connection&)> ReadEventCallback;
+        typedef std::function<void (const Connection&)> ConnectionCallback;
         typedef std::function<void (const Connection&)> WriteCompleteCallback;
-
+        typedef std::function<void (const Connection&)> MessageCallback;
+        void setConnectionCallback(const ConnectionCallback& cb){ connectionCallback_ = cb; }
+        void setWriteCompleteCallback(const WriteCompleteCallback& cb){ writeCompleteCallback_ = cb; }
+        void setMessageCallback(const MessageCallback& cb){ messageCallback_ = cb; }
 
     private:
         std::string name_;
+        ConnectionCallback connectionCallback_;
+        WriteCompleteCallback writeCompleteCallback_;
+        MessageCallback messageCallback_;
     };
 
     typedef std::shared_ptr<Connection> ConnectionPtr;
