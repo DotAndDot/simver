@@ -12,6 +12,7 @@ namespace simver{
     public:
         Connection(int ev, int fd):Channel(ev, fd){}
         ~Connection();
+        virtual void handleRead();
 
     };
 }

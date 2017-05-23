@@ -50,7 +50,7 @@ void EPoll::delChannel(Channel *channel) {
     channelMap_.erase(fd);
 }
 
-void EPoll::pollWait(int timeout, ChannelList& activeChannels) {
+void EPoll::pollWait(int timeout, ChannelList* activeChannels) {
     int num = epoll_wait(epollfd_, &*eventList_.begin(), static_cast<int>(eventList_.size()));
     if(num > 0){
         for(int i = 0; i < num; i++){
@@ -59,7 +59,7 @@ void EPoll::pollWait(int timeout, ChannelList& activeChannels) {
             assert(channelMap_.find(fd) != channelMap_.end());
             assert(channelMap_[fd] == channel);
             channel->setCurevent(eventList_[i].events);
-            activeChannels.push_back(channel);
+            activeChannels->push_back(channel);
         }
         if(num == eventList_.size()){
             eventList_.resize(eventList_.size() * 2);

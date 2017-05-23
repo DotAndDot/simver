@@ -17,6 +17,7 @@ namespace simver{
         EventLoop();
         ~EventLoop();
         void loop();
+        void removeChannel(Channel*);
 
     private:
         ChannelList activeChannels_;

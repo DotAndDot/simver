@@ -23,7 +23,7 @@ namespace simver{
         void updateCtl(int op, Channel* channel);
         void addChannel(Channel* channel);
         void delChannel(Channel* channel);
-        void pollWait(int timeout, ChannelList& channels);
+        void pollWait(int timeout, ChannelList* channels);
         const char* operationToString(int op);
 
     private:

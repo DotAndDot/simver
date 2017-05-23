@@ -1,9 +1,10 @@
-#include "Socket.h"
-#include "log/log.h"
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <strings.h>
 #include <errno.h>
+#include "Socket.h"
+#include "log/log.h"
 
 using namespace simver;
 
@@ -22,6 +23,11 @@ Socket::Socket(uint16_t port)
 
         setReadEvents();
     }
+
+Socket::~Socket() {
+    handleClose();
+    close(channelfd_);
+}
 
 void Socket::init(){
     int res = bind(channelfd_, (struct sockaddr*)&addr_, sizeof(addr_));
@@ -59,14 +65,23 @@ void Socket::handleRead() {
             case ENOTSOCK:
             case EOPNOTSUPP:
                 // unexpected errors
-                LOG_FATAL("unexpected error of Socket::accept() %d", errno);
+                LOG_ERROR("unexpected error of Socket::accept() %d", errno);
                 break;
             default:
                 LOG_ERROR("unknown error of Socket::accept() %d", errno);
                 break;
         }
     }
-    readCallback_(con);
+    if(readCallback_) {
+        readCallback_(con);
+    }
+    else{
+        close(con);
+    }
+}
+
+void Socket::handleClose() {
+    closeCallback_(this);
 }
 
 
