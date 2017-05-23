@@ -1,28 +1,30 @@
 #ifndef   _MACRO_LogModule
 #define   _MACRO_LogModule
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include "macro_define.h"
 
-/* Ã¿¸öÏß³ÌµÄbuffer size*/
+/* æ¯ä¸ªçº¿ç¨‹çš„buffer size*/
 #define   _LOG_BUFFSIZE  1024*1024*4
-/* µ±Ç°½ø³ÌµÄ Stream IO buffer size*/
+/* å½“å‰è¿›ç¨‹çš„ Stream IO buffer size*/
 #define   _SYS_BUFFSIZE  1024*1024*8
-/* log ÎÄ¼ş×Ö·û´®Â·¾¶×î´ó³¤¶È*/
+/* log æ–‡ä»¶å­—ç¬¦ä¸²è·¯å¾„æœ€å¤§é•¿åº¦*/
 #define	  _LOG_PATH_LEN  250
-/* ÈÕÖ¾¶ÔÓ¦µÄÄ£¿éÃû*/
+/* æ—¥å¿—å¯¹åº”çš„æ¨¡å—å*/
 #define   _LOG_MODULE_LEN 32
 
-typedef  enum LogLevel {  
+typedef  enum LogLevel {
 	LL_DEBUG = 1,
 	LL_TRACE = 2,
-	LL_NOTICE = 3, 
-	LL_WARNING = 4, 
+	LL_NOTICE = 3,
+	LL_WARNING = 4,
 	LL_ERROR = 5,
+    LL_FATAL = 6,
 }LogLevel;
 
 /**
-*	Log_Writer  ÈÕÖ¾Àà
+*	Log_Writer  æ—¥å¿—ç±»
 */
 class Log_Writer
 {
@@ -49,7 +51,7 @@ class Log_Writer
 		bool checklevel(LogLevel l);
 		int premakestr(char* m_buffer, LogLevel l);
 		bool _write(char *_pbuffer, int len);
-	private:
+
 		enum LogLevel m_system_level;
 		FILE* fp;
 		bool m_issync;
@@ -60,18 +62,18 @@ class Log_Writer
 		//The __thread specifier may be applied to any global, file-scoped static, function-scoped static, 
 		//or static data member of a class. It may not be applied to block-scoped automatic or non-static data member
 		//in the log  scence,It's safe!!!!
-		//Ò»ÑÔÒÔ±ÎÖ®£¬´Ë³¡¾°²»ÓÃµ£ĞÄ__thread´øÀ´×ÊÔ´leak,Í¬Ê±Ò²²»ÓÃµ£ĞÄ¶à¸öLog_Writer»á¸ÉÈÅ£¬
-		//ÒòÎªÒ»¸öÏß³ÌÍ¬Ò»Ê±¼äÖ»ÓĞÒ»¸öLog_WriterÔÚ¸É»î£¬¸ÉÍêÖ®ºóm_buffer¾ÍresetÁË
-		//ËùÒÔ¼´±ãÒ»¸öÏß³ÌÓÃ»§¶à¸öLog_Write´®ĞĞ(ÒòÎªÒ»¸öÏß³ÌÄÚµÄÔËĞĞÌ¬Ö»ÓĞ´®ĞĞ) Ò²ÊÇÏß³Ì°²È«µÄ£¡£¡£¡
+		//ä¸€è¨€ä»¥è”½ä¹‹ï¼Œæ­¤åœºæ™¯ä¸ç”¨æ‹…å¿ƒ__threadå¸¦æ¥èµ„æºleak,åŒæ—¶ä¹Ÿä¸ç”¨æ‹…å¿ƒå¤šä¸ªLog_Writerä¼šå¹²æ‰°ï¼Œ
+		//å› ä¸ºä¸€ä¸ªçº¿ç¨‹åŒä¸€æ—¶é—´åªæœ‰ä¸€ä¸ªLog_Writeråœ¨å¹²æ´»ï¼Œå¹²å®Œä¹‹åm_bufferå°±resetäº†
+		//æ‰€ä»¥å³ä¾¿ä¸€ä¸ªçº¿ç¨‹ç”¨æˆ·å¤šä¸ªLog_Writeä¸²è¡Œ(å› ä¸ºä¸€ä¸ªçº¿ç¨‹å†…çš„è¿è¡Œæ€åªæœ‰ä¸²è¡Œ) ä¹Ÿæ˜¯çº¿ç¨‹å®‰å…¨çš„ï¼ï¼ï¼
 };
 
 extern Log_Writer WARN_W;
 extern Log_Writer INFO_W;
 
 /**
- * LogLevel ÈÕÖ¾¼¶±ğ
- * p_modulename Ä£¿éÃû Èçmysql
- * p_logdir  ÈÕÖ¾Êä³öÄ¿Â¼
+ * LogLevel æ—¥å¿—çº§åˆ«
+ * p_modulename æ¨¡å—å å¦‚mysql
+ * p_logdir  æ—¥å¿—è¾“å‡ºç›®å½•
  * */
 bool log_init(LogLevel l, const char* p_modulename, const char* p_logdir);
 #endif

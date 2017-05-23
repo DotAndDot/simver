@@ -2,6 +2,14 @@
 #define  _MACRO_DEFINE
 //============basic===================
 
+
+#define LOG_FATAL(log_fmt, log_arg...) \
+    do{\
+        WARN_W.log(LL_FATAL,   "[%s:%d][%s] " log_fmt "\n", \
+                     __FILE__, __LINE__, __FUNCTION__, ##log_arg); \
+    } while (0);\
+    abort()
+
 #define LOG_ERROR(log_fmt, log_arg...) \
     do{ \
         WARN_W.log(LL_ERROR,   "[%s:%d][%s] " log_fmt "\n", \
@@ -30,7 +38,7 @@
     do{ \
         INFO_W.log(LL_DEBUG,   "[%s:%d][%s] " log_fmt "\n", \
                      __FILE__, __LINE__, __FUNCTION__, ##log_arg); \
-    } while (0) 
+    } while (0)
 
 //============extend===================
 #define MACRO_RET(condition, return_val) {\

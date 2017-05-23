@@ -8,15 +8,15 @@
 using namespace simver;
 
 EventLoop::EventLoop()
-    :EPoll(new EPoll()){}
+    :epoll_(new EPoll()){}
 
 void EventLoop::loop() {
     LOG_TRACE("start loop\n");
     while(1){
         activeChannels_.clear();
-        epoll_->pollWait(EPollTimeout, &activeChannels_);
+        epoll_->pollWait(EPollTimeout, activeChannels_);
         for(auto &it : activeChannels_){
-            it->handleEvent();
+            (*it)->handleEvent();
         }
     }
     LOG_TRACE("stop loop\n");

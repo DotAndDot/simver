@@ -16,7 +16,7 @@ EPoll::EPoll()
     :eventList_(initEventSize){
     epollfd_ = epoll_create1(EPOLL_CLOEXEC);
     if(epollfd_ < 0){
-        LOG_ERROR("Epoll::EPoll() : create epoll fail");
+        LOG_FATAL("Epoll::EPoll() : create epoll fail");
     }
 }
 
@@ -50,7 +50,7 @@ void EPoll::delChannel(Channel *channel) {
     channelMap_.erase(fd);
 }
 
-void EPoll::pollWait(int timeout, ChannelList activeChannels) {
+void EPoll::pollWait(int timeout, ChannelList& activeChannels) {
     int num = epoll_wait(epollfd_, &*eventList_.begin(), static_cast<int>(eventList_.size()));
     if(num > 0){
         for(int i = 0; i < num; i++){

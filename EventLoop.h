@@ -9,6 +9,8 @@
 
 namespace simver{
     class EPoll;
+    class Channel;
+    typedef std::vector<Channel*> ChannelList;
     const int EPollTimeout = 10000;
     class EventLoop{
     public:
@@ -17,7 +19,6 @@ namespace simver{
         void loop();
 
     private:
-        typedef std::vector<Channel*> ChannelList;
         ChannelList activeChannels_;
         EPoll* epoll_;
     };

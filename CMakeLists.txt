@@ -4,7 +4,7 @@ project(simver)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
-        log/log.c
+        log/log.cpp
         log/log.h
         log/macro_define.h
         Channel.h
