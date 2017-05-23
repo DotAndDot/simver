@@ -23,6 +23,10 @@ void EventLoop::loop() {
     LOG_TRACE("stop loop\n");
 }
 
+void EventLoop::addChannel(Channel* channel){
+    epoll_->addChannel(channel);
+}
+
 void EventLoop::removeChannel(Channel* channel){
     epoll_->delChannel(channel);
 }

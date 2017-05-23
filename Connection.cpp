@@ -6,6 +6,9 @@
 
 using namespace simver;
 
-Connection::Connection(int ev, int fd)
-    :Channel(ev,fd){}
+Connection::Connection(std::string name, int fd)
+    :Channel(0,fd),
+    name_(name){
+    setReadEvents();
+}
 

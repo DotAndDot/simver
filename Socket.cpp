@@ -25,7 +25,9 @@ Socket::Socket(uint16_t port)
     }
 
 Socket::~Socket() {
-    handleClose();
+    if(closeCallback_) {
+        handleClose();
+    }
     close(channelfd_);
 }
 
