@@ -25,8 +25,8 @@ Socket::Socket(uint16_t port)
     }
 
 Socket::~Socket() {
-    if(closeCallback_) {
-        handleClose();
+    if(closeFunc_){
+        closeFunc_(this);
     }
     close(channelfd_);
 }
@@ -82,8 +82,5 @@ void Socket::handleRead() {
     }
 }
 
-void Socket::handleClose() {
-    closeCallback_(this);
-}
 
 

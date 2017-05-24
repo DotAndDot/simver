@@ -12,3 +12,10 @@ Connection::Connection(std::string name, int fd)
     setReadEvents();
 }
 
+void Connection::handleRead(){
+
+}
+
+void Connection::handleClose() {
+    closeCallback_(this);
+}

@@ -22,12 +22,14 @@ namespace simver{
         ~Server();
         void onNewConnection(int con);
         void start();
+        void removeConnection(Connection* con);
+        void removeSocket(Socket* sock);
 
     private:
         std::string name_;
         EventLoop* loop_;
         Socket* socket_;
-        std::unordered_map<std::string, ConnectionPtr> connectionMap_;
+        std::unordered_map<std::string, Connection*> connectionMap_;
     };
 }
 
