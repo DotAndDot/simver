@@ -12,6 +12,11 @@
 #include <functional>
 
 namespace simver{
+    class Connection;
+    typedef std::function<void (Connection*)> ConnectionCallback;
+    typedef std::function<void (Connection*)> WriteCompleteCallback;
+    typedef std::function<void (Connection*)> MessageCallback;
+    typedef std::function<void (Connection*)> CloseCallback;
     class Connection : public Channel{
     public:
         Connection(std::string name, int fd);
@@ -20,10 +25,6 @@ namespace simver{
         virtual void handleWrite();
         virtual void handleClose();
 
-        typedef std::function<void (Connection*)> ConnectionCallback;
-        typedef std::function<void (Connection*)> WriteCompleteCallback;
-        typedef std::function<void (Connection*)> MessageCallback;
-        typedef std::function<void (Connection*)> CloseCallback;
         void setConnectionCallback(const ConnectionCallback& cb){ connectionCallback_ = cb; }
         void setWriteCompleteCallback(const WriteCompleteCallback& cb){ writeCompleteCallback_ = cb; }
         void setMessageCallback(const MessageCallback& cb){ messageCallback_ = cb; }

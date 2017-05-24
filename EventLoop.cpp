@@ -11,6 +11,10 @@ using namespace simver;
 EventLoop::EventLoop()
     :epoll_(new EPoll()){}
 
+EventLoop::~EventLoop() {
+    activeChannels_.clear();
+}
+
 void EventLoop::loop() {
     LOG_TRACE("start loop\n");
     while(1){

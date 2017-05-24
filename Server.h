@@ -30,6 +30,9 @@ namespace simver{
         EventLoop* loop_;
         Socket* socket_;
         std::unordered_map<std::string, Connection*> connectionMap_;
+        ConnectionCallback connectionCallback_;
+        MessageCallback messageCallback_;
+        WriteCompleteCallback writeCompleteCallback_;
     };
 }
 

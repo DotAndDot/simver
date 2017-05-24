@@ -6,6 +6,7 @@
 #define PROJECT_EVENTLOOP_H
 
 #include<vector>
+#include<memory>
 
 namespace simver{
     class EPoll;
@@ -22,7 +23,7 @@ namespace simver{
 
     private:
         ChannelList activeChannels_;
-        EPoll* epoll_;
+        std::unique_ptr<EPoll> epoll_;
     };
 }
 
