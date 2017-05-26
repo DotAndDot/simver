@@ -7,7 +7,8 @@
 
 namespace simver{
     class Buffer{
-
+    public:
+        void readFromFd(int fd);
     };
 }
 
