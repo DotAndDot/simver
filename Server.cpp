@@ -38,6 +38,7 @@ void Server::onNewConnection(int con) {
     connection->setMessageCallback(messageCallback_);
     connection->setWriteCompleteCallback(writeCompleteCallback_);
     connection->setCloseCallback(bind(&Server::removeConnection, this, _1));
+    connection->setUpdateFunc(bind(&Server::updateChannel, this, _1, _2));
     loop_->addChannel(connection);
     connectionCallback_(connection);
 }
@@ -51,4 +52,8 @@ void Server::removeConnection(Connection *con) {
 
 void Server::removeSocket(Socket* sock){
     loop_->removeChannel(sock);
+}
+
+void Server::updateChannel(int op, Connection* con){
+    loop_->updateChannel(op, con);
 }

@@ -13,10 +13,16 @@ namespace simver{
         virtual ~Channel();
         int getEvents(){ return events_;}
         int getFd() { return channelfd_; }
+
         void setCurevent(int ev){ curevent_ = ev; }
         void setReadEvents(){ events_ = ReadEvent;}
         void setWriteEvents() { events_ = WriteEvent;}
         void setNoneEvents() {events_ = NoneEvent;}
+
+        bool isWriting(){ return events_ & WriteEvent;}
+        void disableWriting(){ events_ &= ~WriteEvent; }
+        void enableWriting(){ events_ |= WriteEvent; }
+
         void handleEvent();
         virtual void handleClose();
         virtual void handleError();

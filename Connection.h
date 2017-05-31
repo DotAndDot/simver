@@ -6,12 +6,13 @@
 #define SIMVER_CONNECTION_H
 
 #include "Channel.h"
-
+#include "Buffer.h"
 #include <string>
 #include <memory>
 #include <functional>
 
 namespace simver{
+    class Buffer;
     class Connection;
     typedef std::function<void (Connection*)> ConnectionCallback;
     typedef std::function<void (Connection*)> WriteCompleteCallback;
@@ -24,11 +25,17 @@ namespace simver{
         virtual void handleRead();
         virtual void handleWrite();
         virtual void handleClose();
+        virtual void handleError();
 
         void setConnectionCallback(const ConnectionCallback& cb){ connectionCallback_ = cb; }
         void setWriteCompleteCallback(const WriteCompleteCallback& cb){ writeCompleteCallback_ = cb; }
         void setMessageCallback(const MessageCallback& cb){ messageCallback_ = cb; }
         void setCloseCallback(const CloseCallback& cb){ closeCallback_ = cb; }
+
+        typedef std::function<void (int, Connection*)> UpdateFunc;
+        void setUpdateFunc(const UpdateFunc& func){ updateConnection_ = func; }
+
+        void send(Buffer* buf);
 
         std::string getName(){ return name_; }
 
@@ -38,6 +45,11 @@ namespace simver{
         WriteCompleteCallback writeCompleteCallback_;
         MessageCallback messageCallback_;
         CloseCallback closeCallback_;
+
+        UpdateFunc updateConnection_;
+
+        Buffer inputBuffer_;
+        Buffer outputBuffer_;
     };
 
 

@@ -34,3 +34,7 @@ void EventLoop::addChannel(Channel* channel){
 void EventLoop::removeChannel(Channel* channel){
     epoll_->delChannel(channel);
 }
+
+void EventLoop::updateChannel(int op, Channel *channel) {
+    epoll_->updateCtl(op, channel);
+}

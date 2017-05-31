@@ -24,6 +24,7 @@ namespace simver{
         void start();
         void removeConnection(Connection* con);
         void removeSocket(Socket* sock);
+        void updateChannel(int op, Connection* con);
 
     private:
         std::string name_;

@@ -20,6 +20,7 @@ namespace simver{
         void loop();
         void addChannel(Channel* channel);
         void removeChannel(Channel* channel);
+        void updateChannel(int op, Channel* channel);
 
     private:
         ChannelList activeChannels_;
