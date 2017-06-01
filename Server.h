@@ -18,7 +18,7 @@ namespace simver{
     class EventLoop;
     class Server{
     public:
-        Server(std::string name, uint16_t port);
+        Server(std::string name, uint16_t port, EventLoop* evloop);
         ~Server();
         void onNewConnection(int con);
         void start();

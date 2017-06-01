@@ -11,10 +11,12 @@ using namespace std;
 using namespace simver;
 using namespace std::placeholders;
 
-Server::Server(string name, uint16_t port)
+Server::Server(string name, uint16_t port, EventLoop* evloop)
         : name_(name),
-          socket_(new Socket(port)){
+          socket_(new Socket(port)),
+          loop_(evloop){
     socket_->setReadCallback(std::bind(&Server::onNewConnection, this, _1));
+    loop_->addChannel(socket_);
 }
 
 Server::~Server() {
