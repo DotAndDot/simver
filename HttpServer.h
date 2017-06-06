@@ -8,11 +8,14 @@
 #include "Server.h"
 #include "EventLoop.h"
 
+class Connection;
 class HttpServer{
 public:
     HttpServer(uint16_t port, simver::EventLoop* loop);
     ~HttpServer();
     void start();
+    void onConnection(Connection* con);
+    void onMessage(Connection* con);
 
     simver::Server server_;
 

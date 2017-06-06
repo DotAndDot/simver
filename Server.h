@@ -25,6 +25,9 @@ namespace simver{
         void removeConnection(Connection* con);
         void removeSocket(Socket* sock);
         void updateChannel(int op, Connection* con);
+        void setConnectionCallback(const ConnectionCallback& cb){ connectionCallback_ = cb; }
+        void setMessageCallback(const MessageCallback& cb){ messageCallback_ = cb; }
+        void setWriteCompleteCallback(const WriteCompleteCallback& cb){ writeCompleteCallback_ = cb; }
 
     private:
         std::string name_;
