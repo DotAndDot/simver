@@ -11,7 +11,7 @@ using namespace simver;
 
 Connection::Connection(std::string name, int fd)
     :Channel(0,fd),
-    name_(name){
+    name_(name) {
     setReadEvents();
 }
 
@@ -103,6 +103,8 @@ void Connection::handleWrite() {
 }
 
 void Connection::handleClose() {
+    state_ = "disconnected";
+    connectionCallback_(this);
     closeCallback_(this);
 }
 

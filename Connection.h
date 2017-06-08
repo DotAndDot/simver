@@ -22,6 +22,9 @@ namespace simver{
     public:
         Connection(std::string name, int fd);
         ~Connection();
+        void setState(std::string sta){ state_ = sta; }
+        bool connected(){ return state_ == "connected"; }
+
         virtual void handleRead();
         virtual void handleWrite();
         virtual void handleClose();
@@ -41,6 +44,7 @@ namespace simver{
 
     private:
         std::string name_;
+        std::string state_;
         ConnectionCallback connectionCallback_;
         WriteCompleteCallback writeCompleteCallback_;
         MessageCallback messageCallback_;

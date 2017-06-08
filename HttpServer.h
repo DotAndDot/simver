@@ -7,18 +7,20 @@
 
 #include "Server.h"
 #include "EventLoop.h"
+#include <unordered_map>
+#include "Request.h"
 
-class Connection;
 class HttpServer{
 public:
     HttpServer(uint16_t port, simver::EventLoop* loop);
     ~HttpServer();
     void start();
-    void onConnection(Connection* con);
-    void onMessage(Connection* con);
+    void onConnection(simver::Connection* con);
+    void onMessage(simver::Connection* con);
 
+private:
     simver::Server server_;
-
+    std::unordered_map<int, Request*> requestMap_;
 };
 
 #endif //SIMVER_HTTPSERVER_H

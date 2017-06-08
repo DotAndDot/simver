@@ -2,7 +2,6 @@
 // Created by gxh on 2017/6/1.
 //
 #include "HttpServer.h"
-#include <functional>
 
 using namespace simver;
 using namespace std;
@@ -19,7 +18,12 @@ void HttpServer::start() {
 }
 
 void HttpServer::onConnection(Connection *con) {
-
+    if(con->connected()){
+        requestMap_[con->getFd()] = new Request();
+    }
+    else{
+        requestMap_.erase(con->getFd());
+    }
 }
 
 void HttpServer::onMessage(Connection *con) {
