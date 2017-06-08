@@ -64,7 +64,7 @@ void Connection::handleRead(){
     int saveErrno = 0;
     ssize_t n = inputBuffer_.readFd(channelfd_, &saveErrno);
     if(n > 0){
-        messageCallback_(this);
+        messageCallback_(this, &inputBuffer_);
     }
     else if(n == 0){
         handleClose();

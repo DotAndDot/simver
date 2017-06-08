@@ -16,7 +16,7 @@ namespace simver{
     class Connection;
     typedef std::function<void (Connection*)> ConnectionCallback;
     typedef std::function<void (Connection*)> WriteCompleteCallback;
-    typedef std::function<void (Connection*)> MessageCallback;
+    typedef std::function<void (Connection*, Buffer*)> MessageCallback;
     typedef std::function<void (Connection*)> CloseCallback;
     class Connection : public Channel{
     public:

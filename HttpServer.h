@@ -16,7 +16,7 @@ public:
     ~HttpServer();
     void start();
     void onConnection(simver::Connection* con);
-    void onMessage(simver::Connection* con);
+    void onMessage(simver::Connection* con, simver::Buffer* buffer);
 
 private:
     simver::Server server_;

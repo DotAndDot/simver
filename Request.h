@@ -10,8 +10,12 @@
 
 class Request{
 public:
-    Request();
+    Request():state_("completed"){};
     ~Request();
+
+    bool compelted(){ return state_ == "completed"; }
+    void setState(std::string sta){ state_ = sta; }
+
     void setHeader(std::string head, std::string content){
         headers_[head] = content;
     }
@@ -19,8 +23,11 @@ public:
         return headers_.find(head) == headers_.end() ? "" : headers_[head];
     }
 
+    void clear(){ headers_.clear(); }
+
 private:
     std::map<std::string, std::string> headers_;
+    std::string state_;
 };
 
 #endif //SIMVER_REQUEST_H
