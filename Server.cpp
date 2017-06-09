@@ -42,7 +42,7 @@ void Server::onNewConnection(int con) {
     connection->setCloseCallback(bind(&Server::removeConnection, this, _1));
     connection->setUpdateFunc(bind(&Server::updateChannel, this, _1, _2));
     loop_->addChannel(connection);
-    connection->setState("connected");
+    connection->setConnected();
     connectionCallback_(connection);
 }
 

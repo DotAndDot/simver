@@ -103,7 +103,7 @@ void Connection::handleWrite() {
 }
 
 void Connection::handleClose() {
-    state_ = "disconnected";
+    setDisconnected();
     connectionCallback_(this);
     closeCallback_(this);
 }

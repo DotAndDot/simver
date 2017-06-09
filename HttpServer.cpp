@@ -23,8 +23,7 @@ void HttpServer::onConnection(Connection *con) {
         requestMap_[con->getFd()] = new Request();
     }
     else{
-        delete requestMap_[con->getFd()];
-        requestMap_.erase(con->getFd());
+        removeRequest(con->getFd());
     }
 }
 
@@ -34,19 +33,48 @@ void HttpServer::onMessage(Connection *con, Buffer* buffer) {
     Request* req = requestMap_[fd];
     while(crlf){
         const void* data = buffer->peek();
+        string line(data, crlf - 1);
         if(!req->compelted()){
-            string line(data, crlf - 1);
             size_t index = line.find(':');
             if(index == string::npos){
                 LOG_ERROR("HttpServer::onMessage() Error request");
+                removeRequest(con->getFd());
+                server_.removeConnection(con);
                 return;
             }
-            string header = line.substr(0, index), content = line.substr(index + 1, line.size() - index);
+            string header = line.substr(0, index), content = line.substr(index + 1, line.size() - index - 1);
             req->setHeader(header, content);
         }
         else{
             req->clear();
-
+            size_t index = line.find(' ');
+            if(index == string::npos){
+                removeRequest(con->getFd());
+                LOG_ERROR("HttpServer::onMessage() Error request");
+                server_.removeConnection(con);
+                return;
+            }
+            string method = line.substr(0, index);
+            size_t index2 = line.find(index + 1, ' ');
+            if(index2 == string::npos){
+                removeRequest(con->getFd());
+                LOG_ERROR("HttpServer::onMessage() Error request");
+                server_.removeConnection(con);
+                return;
+            }
+            string path = line.substr(index + 1, index2 - index), version = line.substr(index2 + 1, line.size() - index2 - 1);
+            req->setHeader("method", method);
+            req->setHeader("path", path);
+            req->setHeader("version", version);
+            req->setIncompleted();
         }
+        size_t len = crlf + 2 - data;
+        buffer->retrieve(len);
+        const void* tcrlf = buffer->findCRLF();
+        if(tcrlf && tcrlf - crlf == 2){
+            req->setCompleted();
+            //handle requeset
+        }
+        crlf = tcrlf;
     }
 }

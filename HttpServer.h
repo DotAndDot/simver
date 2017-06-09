@@ -18,6 +18,13 @@ public:
     void onConnection(simver::Connection* con);
     void onMessage(simver::Connection* con, simver::Buffer* buffer);
 
+    void removeRequest(int in){
+        if(requestMap_.find(in) != requestMap_.end()){
+            delete requestMap_[in];
+            requestMap_.erase(in);
+        }
+    }
+
 private:
     simver::Server server_;
     std::unordered_map<int, Request*> requestMap_;

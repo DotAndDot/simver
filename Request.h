@@ -14,6 +14,8 @@ public:
     ~Request();
 
     bool compelted(){ return state_ == "completed"; }
+    void setIncompleted(){ state_ = "incompleted";}
+    void setCompleted(){ state_ = "completed"; }
     void setState(std::string sta){ state_ = sta; }
 
     void setHeader(std::string head, std::string content){

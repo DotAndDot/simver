@@ -24,6 +24,8 @@ namespace simver{
         ~Connection();
         void setState(std::string sta){ state_ = sta; }
         bool connected(){ return state_ == "connected"; }
+        void setConnected(){ state_ = "connected"; }
+        void setDisconnected(){ state_ = "disconnected"; }
 
         virtual void handleRead();
         virtual void handleWrite();
