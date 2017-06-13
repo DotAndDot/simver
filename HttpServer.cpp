@@ -3,10 +3,13 @@
 //
 #include "HttpServer.h"
 #include "log/log.h"
+#include <sys/stat.h>
 
 using namespace simver;
 using namespace std;
 using namespace std::placeholders;
+
+string HttpServer::WWW_PATH = "";
 
 HttpServer::HttpServer(uint16_t port, simver::EventLoop *loop)
         :server_("simver", port, loop){
@@ -44,6 +47,7 @@ void HttpServer::onMessage(Connection *con, Buffer* buffer) {
             }
             string header = line.substr(0, index), content = line.substr(index + 1, line.size() - index - 1);
             req->setHeader(header, content);
+            buffer->
         }
         else{
             req->clear();
@@ -74,7 +78,30 @@ void HttpServer::onMessage(Connection *con, Buffer* buffer) {
         if(tcrlf && tcrlf - crlf == 2){
             req->setCompleted();
             //handle requeset
+            handleRequest(req, con);
         }
         crlf = tcrlf;
+    }
+}
+
+void HttpServer::handleRequest(Request* request, Connection *con) {
+    struct stat st;
+    if((*request)["method"] == "GET"){
+        string path((*request)["path"]);
+        size_t qindex = path.find('?');
+        if(qindex != string::npos){
+
+        }
+        path = WWW_PATH + path;
+        if(path.back() == '/'){
+            path += "index.html";
+        }
+        if(stat(path.c_str(), &st) == -1){
+
+        }
+
+    }
+    else{
+
     }
 }

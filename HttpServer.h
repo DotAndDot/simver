@@ -17,6 +17,7 @@ public:
     void start();
     void onConnection(simver::Connection* con);
     void onMessage(simver::Connection* con, simver::Buffer* buffer);
+    void handleRequest(Request* request, simver::Connection* con);
 
     void removeRequest(int in){
         if(requestMap_.find(in) != requestMap_.end()){
@@ -28,6 +29,7 @@ public:
 private:
     simver::Server server_;
     std::unordered_map<int, Request*> requestMap_;
+    static std::string WWW_PATH;
 };
 
 #endif //SIMVER_HTTPSERVER_H

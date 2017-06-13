@@ -25,6 +25,14 @@ public:
         return headers_.find(head) == headers_.end() ? "" : headers_[head];
     }
 
+    std::string& operator [](std::string key){
+        if(headers_.find(key) != headers_.end()){
+            return headers_[key];
+        }
+        std::string t;
+        return t;
+    }
+
     void clear(){ headers_.clear(); }
 
 private:
