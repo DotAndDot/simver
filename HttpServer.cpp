@@ -10,6 +10,7 @@ using namespace std;
 using namespace std::placeholders;
 
 string HttpServer::WWW_PATH = "";
+string HttpServer::SERVER_STRING = "Server: simver/0.1.0\r\n";
 
 HttpServer::HttpServer(uint16_t port, simver::EventLoop *loop)
         :server_("simver", port, loop){
@@ -108,7 +109,7 @@ void HttpServer::handleRequest(Request* request, Connection *con) {
             badRequest(con);
         }
         else{
-            serverFile(con, path);
+            serveFile(con, path);
         }
     }
     else{
@@ -119,7 +120,7 @@ void HttpServer::handleRequest(Request* request, Connection *con) {
 void HttpServer::notFound(Connection* con) {
     string response;
     response += "HTTP/1.0 404 NOT FOUND\r\n";
-    response += "Server: simver/0.1.0\r\n";
+    response += SERVER_STRING;
     response += "Content-Type: text/html\r\n";
     response += "\r\n";
     response += "<HTML><TITLE>Not Found</TITLE>\r\n";
@@ -145,13 +146,26 @@ void HttpServer::badRequest(simver::Connection *con) {
     con->send(&buf);
 }
 
-void HttpServer::serverFile(simver::Connection *con, string path) {
+void HttpServer::serveFile(simver::Connection *con, string path) {
     FILE *resource = NULL;
     resource = fopen(path, "r");
     if(resource == NULL){
         notFound(con);
     }
     else{
-        
+        string headers;
+        headers += "HTTP/1.0 200 OK\r\n";
+        headers += SERVER_STRING;
+        headers += "Content-Type: text/html\r\n";
+        headers += "\r\n";
+        Buffer buf;
+        buf.append(headers.data(), headers.size());
+        char rbuf[1024];
+        fgets(rbuf, sizeof(rbuf), resource);
+        while(!feof(resource)){
+            buf.append(rbuf, strlen(rbuf));
+            fgets(rbuf, sizeof(buf), resource);
+        }
+        con->send(&buf);
     }
 }

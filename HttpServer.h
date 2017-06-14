@@ -20,7 +20,7 @@ public:
     void handleRequest(Request* request, simver::Connection* con);
     void notFound(simver::Connection* con);
     void badRequest(simver::Connection* con);
-    void serverFile(simver::Connection* con, std::string path);
+    void serveFile(simver::Connection* con, std::string path);
 
     void removeRequest(int in){
         if(requestMap_.find(in) != requestMap_.end()){
@@ -33,6 +33,7 @@ private:
     simver::Server server_;
     std::unordered_map<int, Request*> requestMap_;
     static std::string WWW_PATH;
+    static std::string SERVER_STRING;
 };
 
 #endif //SIMVER_HTTPSERVER_H
