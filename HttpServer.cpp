@@ -90,18 +90,68 @@ void HttpServer::handleRequest(Request* request, Connection *con) {
         string path((*request)["path"]);
         size_t qindex = path.find('?');
         if(qindex != string::npos){
-
+            badRequest(con);
+            return;
         }
         path = WWW_PATH + path;
         if(path.back() == '/'){
             path += "index.html";
         }
         if(stat(path.c_str(), &st) == -1){
-
+            notFound(con);
+            return;
         }
-
+        if ((st.st_mode & S_IFMT) == S_IFDIR){
+            path += "index.html";
+        }
+        if ((st.st_mode & S_IXUSR) || (st.st_mode & S_IXGRP) || (st.st_mode & S_IXOTH) ){
+            badRequest(con);
+        }
+        else{
+            serverFile(con, path);
+        }
     }
     else{
+        badRequest(con);
+    }
+}
 
+void HttpServer::notFound(Connection* con) {
+    string response;
+    response += "HTTP/1.0 404 NOT FOUND\r\n";
+    response += "Server: simver/0.1.0\r\n";
+    response += "Content-Type: text/html\r\n";
+    response += "\r\n";
+    response += "<HTML><TITLE>Not Found</TITLE>\r\n";
+    response += "<BODY><P>The server could not fulfill\r\n";
+    response += "your request because the resource specified\r\n";
+    response += "is unavailable or nonexistent.\r\n";
+    response += "</BODY></HTML>\r\n";
+    Buffer buf;
+    buf.append(response.data(), response.size());
+    con->send(&buf);
+}
+
+void HttpServer::badRequest(simver::Connection *con) {
+    string response;
+    response += "HTTP/1.0 400 BAD REQUEST\r\n";
+    response += "Server: simver/0.1.0\r\n";
+    response += "Content-Type: text/html\r\n";
+    response += "\r\n";
+    response += "<P>Your browser sent a bad request, ";
+    response += "such as a POST without a Content-Length.\r\n";
+    Buffer buf;
+    buf.append(response.data(), response.size());
+    con->send(&buf);
+}
+
+void HttpServer::serverFile(simver::Connection *con, string path) {
+    FILE *resource = NULL;
+    resource = fopen(path, "r");
+    if(resource == NULL){
+        notFound(con);
+    }
+    else{
+        
     }
 }

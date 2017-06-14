@@ -18,6 +18,9 @@ public:
     void onConnection(simver::Connection* con);
     void onMessage(simver::Connection* con, simver::Buffer* buffer);
     void handleRequest(Request* request, simver::Connection* con);
+    void notFound(simver::Connection* con);
+    void badRequest(simver::Connection* con);
+    void serverFile(simver::Connection* con, std::string path);
 
     void removeRequest(int in){
         if(requestMap_.find(in) != requestMap_.end()){
