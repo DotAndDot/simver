@@ -3,9 +3,10 @@
 //
 #include <unistd.h>
 #include <strings.h>
-#include<sys/epoll.h>
-#include<error.h>
+#include <sys/epoll.h>
+#include <error.h>
 #include <assert.h>
+#include <string.h>
 #include "EPoll.h"
 #include "log/log.h"
 #include "Channel.h"
@@ -51,7 +52,7 @@ void EPoll::delChannel(Channel *channel) {
 }
 
 void EPoll::pollWait(int timeout, ChannelList* activeChannels) {
-    int num = epoll_wait(epollfd_, &*eventList_.begin(), static_cast<int>(eventList_.size()));
+    int num = epoll_wait(epollfd_, &*eventList_.begin(), static_cast<int>(eventList_.size()), timeout);
     if(num > 0){
         for(int i = 0; i < num; i++){
             Channel* channel = static_cast<Channel*>(eventList_[i].data.ptr);
@@ -69,7 +70,7 @@ void EPoll::pollWait(int timeout, ChannelList* activeChannels) {
         LOG_TRACE("nothing happen");
     }
     else{
-        LOG_ERROR("EPoll::pollWait()  error = %d message = %s", errno, strerrir(errno));
+        LOG_ERROR("EPoll::pollWait()  error = %d message = %s", errno, strerror(errno));
     }
 }
 

@@ -48,7 +48,6 @@ void HttpServer::onMessage(Connection *con, Buffer* buffer) {
             }
             string header = line.substr(0, index), content = line.substr(index + 1, line.size() - index - 1);
             req->setHeader(header, content);
-            buffer->
         }
         else{
             req->clear();

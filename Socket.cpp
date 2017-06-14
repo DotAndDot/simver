@@ -43,7 +43,8 @@ void Socket::init(){
 void Socket::handleRead() {
     struct sockaddr add;
     bzero(&add, sizeof(add));
-    int con = accept4(channelfd_, &add, sizeof(add), SOCK_NONBLOCK | SOCK_CLOEXEC);
+    socklen_t addlen = static_cast<socklen_t>(sizeof(add));
+    int con = accept4(channelfd_, &add, &addlen, SOCK_NONBLOCK | SOCK_CLOEXEC);
     if(con < 0){
         int savedErrno = errno;
         switch (savedErrno)

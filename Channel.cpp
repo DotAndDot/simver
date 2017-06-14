@@ -5,6 +5,7 @@
 #include "Channel.h"
 #include <sys/epoll.h>
 #include <sstream>
+#include <bits/poll.h>
 #include "log/log.h"
 
 using namespace simver;
